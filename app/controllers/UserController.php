@@ -47,4 +47,27 @@ class userController extends account
         }
     }
 
+    public function profileAction(){
+
+        $username=isset($_POST['username'])?$_POST['username']:'';
+        $email=isset($_POST['email'])?$_POST['email']:'';
+        $currentPassword=isset($_POST['currentPassword'])?$_POST['currentPassword']:'';
+        $newPassword=isset($_POST['newPassword'])?$_POST['newPassword']:'';
+        $confirmPassword=isset($_POST['confirmPassword'])?$_POST['confirmPassword']:'';
+
+        if(!empty($_POST)){
+            if(!$this->validate(['username','email','password'], $_POST)){
+                return htmlOutput::error("/profile", 'username', $this->error);
+            }
+            elseif(!$this->checkIfEmailExists($email)){
+                return htmlOutput::error('/profile','email', 'This email does not exists');
+            }
+            elseif($this->checkData($username, $currentPassword)){
+                return htmlOutput::error("/profile",'currentPassword', 'Password is not valid');
+            }
+            else {
+                $this->save($username, $email, $newPassword, $confirmPassword);
+            }
+        }
+    }
 }
