@@ -21,3 +21,5 @@
 
  $router->get('register', 'pageControllers@register');
  $router->post('account/register', 'userController@registerAction');
+
+ $router->post('logout','userController@logoutAction');

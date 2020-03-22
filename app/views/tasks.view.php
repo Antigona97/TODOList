@@ -7,8 +7,8 @@
         <div class="row" id="addtask" style="">
             <h4><i class="fa fa-plus-circle"></i>Add task</h4>
         </div>
-        <?php $tasks=new \App\Controllers\taskControllers();
-              $tasks->displayTasks();
+        <?php $data=new \App\controllers\htmlOutput();
+              $data->output($data);
         ?>
     </form>
     <form class="form-inline" method="post" action="/tasks" id="newTask" style="display: none">

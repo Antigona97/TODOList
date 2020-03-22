@@ -23,7 +23,7 @@
             <button type="button" class="btn btn-outline-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="/profile">Profile</a>
-                <a class="dropdown-item" href="#">Logout</a>
+                <a class="dropdown-item" href="/logout">Logout</a>
             </div>
         </div>
     </form>

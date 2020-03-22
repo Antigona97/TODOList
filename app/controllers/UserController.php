@@ -70,4 +70,9 @@ class userController extends account
             }
         }
     }
+
+    public function logoutAction(){
+        unset ($_SESSION['account']);
+        htmlOutput::redirect('/account/login');
+    }
 }
