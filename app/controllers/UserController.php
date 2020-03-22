@@ -15,7 +15,7 @@ class userController extends account
 
         if(!empty($_POST) && !empty($username) && !empty($password)){
             if(!($this->validate(['username', 'password'], $_POST))){
-                return htmlOutput::error("/",'username','Username is not valid');
+                return htmlOutput::error("/",'username',$this->error);
             }
             elseif (!$this->checkData($username, $password)){
                 return htmlOutput::error("/", 'password', 'Password is not valid');

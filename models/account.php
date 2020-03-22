@@ -43,7 +43,7 @@ class account
             'username'=>$username
         ];
         $hash=App::get('database')->selectData("Select password from users where username=:username", $parameters);
-        if(!password_verify($password, $hash)){
+        if(!$hash or !password_verify($password, $hash["password"])){
             return false;
         } return true;
     }
@@ -57,11 +57,13 @@ class account
     }
 
     public function register($email, $username, $password){
+        $passwordHash=password_hash($password, PASSWORD_BCRYPT, array("cost"=>12));
+        $hash=substr($passwordHash,0,60);
         $parameters=[
             'email'=>$email,
             'username'=>$username,
-            'password'=>password_hash($password, PASSWORD_BCRYPT, array("cost" => 12)),
-            'confirmPassword'=>password_hash($password, PASSWORD_BCRYPT, array("cost" => 12))
+            'password'=>$hash,
+            'confirmPassword'=>$hash
         ];
         $data=App::get('database')->insert('users', $parameters);
     }
