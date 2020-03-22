@@ -6,6 +6,7 @@
 
  $router->get('thisweek', 'pageControllers@thisweek');
  $router->get('profile', 'pageControllers@changeProfile');
+ $router->post('profile', 'userController@ProfileAction');
 
  $router->post('searchTasks','taskControllers@displayTasks');
  $router->get('searchTasks', 'pageControllers@todayTasks');
