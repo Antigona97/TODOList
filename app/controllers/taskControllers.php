@@ -44,7 +44,6 @@ class taskControllers extends task
             return $this->displayTasks($userId);
         }
         $tasks = $this->displayTasks($userId);
-        return $this->tasks;
     }
 
     public function isSearch(){
