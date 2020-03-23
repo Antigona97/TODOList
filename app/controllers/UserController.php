@@ -18,7 +18,7 @@ class userController extends account
                 return htmlOutput::error("/",'username',$this->error);
             }
             elseif (!$this->checkData($username, $password)){
-                return htmlOutput::error("/", 'password', 'Password is not valid');
+               return htmlOutput::error("/", 'password', 'Password is not valid');
             }
             $this->login($username);
             htmlOutput::redirect('today');

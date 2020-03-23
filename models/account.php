@@ -42,9 +42,9 @@ class account
         $parameters=[
             'username'=>$username
         ];
-        $hash=App::get('database')->selectData("Select password from users where username=:username", $parameters);
-        if(!$hash or !password_verify($password, $hash["password"])){
-            return false;
+        $hash=App::get('database')->selectData("Select * from users where username=:username", $parameters);
+        if(!password_verify($password, $hash['password'])){
+            return $hash['password'];
         } return true;
     }
 
@@ -52,7 +52,7 @@ class account
         $parameters=[
             'username'=>$username
         ];
-        $data=App::get('database')->selectData("Select * from tasks where username=:username", $parameters);
+        $data=App::get('database')->selectData("Select * from users where username=:username", $parameters);
         $_SESSION['account']=$data[0];
     }
 
