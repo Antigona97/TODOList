@@ -3,6 +3,8 @@
 
 namespace App\Controllers;
 
+session_start();
+
 use App\controllers\htmlOutput;
 use App\Models\account;
 
@@ -73,6 +75,6 @@ class userController extends account
 
     public function logoutAction(){
         unset ($_SESSION['account']);
-        htmlOutput::redirect('/account/login');
+        htmlOutput::redirect('');
     }
 }

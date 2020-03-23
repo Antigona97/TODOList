@@ -1,22 +1,26 @@
 <?php
+
 namespace App\Controllers;
+
+session_start();
 
 use App\Core\App;
 use App\Core\Database\queryBuilder;
 use App\controllers\htmlOutput;
+use App\Models\account;
+use App\Models\task;
 use \Exception;
 
-class taskControllers extends htmlOutput
+class taskControllers extends task
 {
-    public $tasks;
     public $view;
     public function insertTasks(){
         $description=isset($_POST['description'])?$_POST['description']:'';
         if($description==''){
-            $this->redirect('');
+            htmlOutput::redirect('');
         }
         else  {
-            $tasks=App::get('database')->insert('tasks',[
+            $insertTask=App::get('database')->insert('tasks',[
                 'description'=>$description
             ]);
         }
@@ -24,24 +28,23 @@ class taskControllers extends htmlOutput
 
     public function completedTasks(){
         if(isset($_GET['completed'])) {
-            $tasks = App::get('database')->update('tasks', [
+            $updateTasks = App::get('database')->update('tasks', [
                 'completed' => '1'
             ]);
-            $this->redirect('');
+            htmlOutput::redirect('');
         } else {
-            return $this->redirect('/today');
+            return htmlOutput::redirect('/today');
         }
     }
 
-    public function displayTasks(){
-        if($this->isSearch()) {
+    public function display(){
+        $userId=$_SESSION['account'];
+        if ($this->isSearch()) {
             $val = $this->isSearch();
-            $query = "Select * from tasks where description like %$val%";
-
-            $tasks = App::get('database')->selectData($query,['']);
-            return $this->format($tasks);
+            return $this->displayTasks($userId);
         }
-        $tasks=App::get('database')->selectData("Select * from tasks", ['']);
+        $tasks = $this->displayTasks($userId);
+        return $this->tasks;
     }
 
     public function isSearch(){
@@ -49,6 +52,6 @@ class taskControllers extends htmlOutput
     }
 
     public function format($tasks){
-        return $this->output($tasks);
+        return htmlOutput::output($tasks);
     }
 }

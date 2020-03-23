@@ -1,4 +1,4 @@
-<?php include_once "nav.php" ?>
+<?php include_once "nav.view.php" ?>
 <!-- Page content -->
 <div id="editor">
     <div id="agenda-view">
@@ -7,9 +7,15 @@
         <div class="row" id="addtask" style="">
             <h4><i class="fa fa-plus-circle"></i>Add task</h4>
         </div>
-        <?php $data=new \App\controllers\htmlOutput();
-              $data->output($data);
-        ?>
+        <div>
+            <?php
+                foreach ($tasks as $task) :?>
+                    <h4><i class="fa fa-circle">
+                            <?=$task['description']?>
+                        </i>
+                    </h4>
+                <?php endforeach; ?>
+        </div>
     </form>
     <form class="form-inline" method="post" action="/tasks" id="newTask" style="display: none">
         <div class="row">

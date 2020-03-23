@@ -1,4 +1,4 @@
-<?php include_once "nav.php" ?>
+<?php include_once "nav.view.php" ?>
 
 <div class="content">
     <h1>Edit Profile</h1>

@@ -1,4 +1,4 @@
-<?php include_once "nav.php" ?>
+<?php include_once "nav.view.php" ?>
 <!-- Page content -->
 <div class="content">
     <form method="post">

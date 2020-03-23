@@ -2,13 +2,13 @@
 
  $router->get('', 'pageControllers@home');
  $router->get('today', 'pageControllers@todayTasks');
- $router->get('todayTasks', 'taskControllers@todayTasks');
+ $router->get('todayTasks', 'taskControllers@display');
 
  $router->get('thisweek', 'pageControllers@thisweek');
  $router->get('profile', 'pageControllers@changeProfile');
  $router->post('profile', 'userController@ProfileAction');
 
- $router->post('searchTasks','taskControllers@displayTasks');
+ $router->post('searchTasks','taskControllers@display');
  $router->get('searchTasks', 'pageControllers@todayTasks');
 
  $router->get('tasks', 'pageControllers@todayTasks');
@@ -23,3 +23,4 @@
  $router->post('account/register', 'userController@registerAction');
 
  $router->post('logout','userController@logoutAction');
+ $router->get('logout', 'userController@logoutAction');

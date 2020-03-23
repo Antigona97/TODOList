@@ -13,9 +13,11 @@ class pageControllers extends htmlOutput
     {
         return htmlOutput::view('login');
     }
+
     public function register(){
         return htmlOutput::view('register');
     }
+
     public function todayTasks()
     {
         return htmlOutput::view('tasks');
@@ -28,4 +30,5 @@ class pageControllers extends htmlOutput
     public function changeProfile(){
         return htmlOutput::view('profile');
     }
+
 }
