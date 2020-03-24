@@ -9,20 +9,16 @@
         </div>
         <div>
             <?php
-            if(is_array($tasks) || is_object($tasks))
-            {
-                foreach ($tasks as $task) :?>
-                    <p><i class="fa fa-circle">
-                            <?= $task->description ?>
-                        </i>
-                    </p>
-                <?php endforeach;
-            }?>
+            foreach ($tasks as $task) :?>
+                <p><i class="fa fa-circle"></i>
+                    <a type="submit" href="/openTask?task=<?=$task->taskName; ?>"><?= $task->taskName?></a>
+                </p>
+            <?php endforeach;?>
         </div>
     </form>
     <form class="form-inline" method="post" action="/tasks" id="newTask" style="display: none">
         <div class="row">
-            <input type="text" name="description" class="form-control mr-sm-2" placeholder="e.g. Conference meeting">
+            <input type="text" name="taskName" class="form-control mr-sm-2" placeholder="e.g. Conference meeting">
             <button id="dateTask" class="btn btn-outline-dark my-2 my-sm-0"><?php echo date("d F") ?></button>
             <button type="submit" class="btn btn-outline-dark my-2 my-sm-0">Add task</button>
         </div>

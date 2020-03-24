@@ -16,7 +16,6 @@ return array(
     'App\\Core\\Router' => $baseDir . '/core/Router.php',
     'App\\Models\\account' => $baseDir . '/models/account.php',
     'App\\Models\\task' => $baseDir . '/models/task.php',
-    'App\\controllers\\ItasksInterface' => $baseDir . '/app/controllers/ItasksInterface.php',
     'App\\controllers\\htmlOutput' => $baseDir . '/app/controllers/htmlOutput.php',
     'ComposerAutoloaderInite7e38e44b16003a522e4dc11c3770e7c' => $vendorDir . '/composer/autoload_real.php',
     'Composer\\Autoload\\ClassLoader' => $vendorDir . '/composer/ClassLoader.php',

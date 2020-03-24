@@ -6,10 +6,6 @@ namespace Composer\Autoload;
 
 class ComposerStaticInite7e38e44b16003a522e4dc11c3770e7c
 {
-    public static $files = array (
-        'b7e457a64400ebe388f8a810461d102e' => __DIR__ . '/../..' . '/app/controllers/htmlOutput.php',
-    );
-
     public static $classMap = array (
         'App\\Controllers\\pageControllers' => __DIR__ . '/../..' . '/app/controllers/pageControllers.php',
         'App\\Controllers\\taskControllers' => __DIR__ . '/../..' . '/app/controllers/taskControllers.php',
@@ -21,7 +17,6 @@ class ComposerStaticInite7e38e44b16003a522e4dc11c3770e7c
         'App\\Core\\Router' => __DIR__ . '/../..' . '/core/Router.php',
         'App\\Models\\account' => __DIR__ . '/../..' . '/models/account.php',
         'App\\Models\\task' => __DIR__ . '/../..' . '/models/task.php',
-        'App\\controllers\\ItasksInterface' => __DIR__ . '/../..' . '/app/controllers/ItasksInterface.php',
         'App\\controllers\\htmlOutput' => __DIR__ . '/../..' . '/app/controllers/htmlOutput.php',
         'ComposerAutoloaderInite7e38e44b16003a522e4dc11c3770e7c' => __DIR__ . '/..' . '/composer/autoload_real.php',
         'Composer\\Autoload\\ClassLoader' => __DIR__ . '/..' . '/composer/ClassLoader.php',

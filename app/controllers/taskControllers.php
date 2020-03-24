@@ -13,16 +13,30 @@ use \Exception;
 
 class taskControllers extends task
 {
-    public $view;
-    public function insertTasks(){
-        $description=isset($_POST['description'])?$_POST['description']:'';
-        if($description==''){
-            htmlOutput::redirect('');
-        }
-        else  {
-            $insertTask=App::get('database')->insert('tasks',[
-                'description'=>$description
+    public function createTasks(){
+        $user=$_SESSION['account'];
+        $taskName=isset($_POST['taskName'])?$_POST['taskName']:'';
+        if(!empty($taskName)){
+            $insert=$this->insertTasks($taskName, $user->userId);
+            $tasks=$this->displayTasksAction();
+            return htmlOutput::view('tasks', [
+                'tasks'=>$tasks
             ]);
+        } htmlOutput::redirect('');
+    }
+
+    public function updateTaskAction(){
+        $taskName=isset($_GET['taskName'])?$_GET['taskName']:'';
+        $description=isset($_POST['description'])?$_POST['description']:'';
+        if($_POST['description']){
+            if(!empty($description) && !empty($taskName)){
+                $this->updateTasks([
+                    'description'=>$description,
+                    'taskName'=>$taskName
+                ]);
+            }  return htmlOutput::view('tasks');
+        } elseif ($_POST['editTask']){
+
         }
     }
 
@@ -37,19 +51,15 @@ class taskControllers extends task
         }
     }
 
-    public function display(){
-        $userId=$_SESSION['account'];
-        $tasks = $this->displayTasks($userId);
-        return htmlOutput::view('tasks',[
+    public function displayTasksAction(){
+        $user=$_SESSION['account'];
+        $tasks = $this->displayTasks($user->userId);
+        return htmlOutput::view('tasks', [
             'tasks'=>$tasks
         ]);
     }
 
     public function isSearch(){
         return isset($_GET['searchTask'])?$_GET['searchTask']:'';
-    }
-
-    public function format($tasks){
-        return htmlOutput::output($tasks);
     }
 }

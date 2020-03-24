@@ -39,25 +39,12 @@ class queryBuilder
                     } else {
                         $type = PDO::PARAM_STR;
                     }
+
                     $stmt->bindValue(':'.$key, $val, $type);
                 }
             }
             $stmt->execute();
             return $stmt->fetchALL(PDO::FETCH_CLASS);
-        } catch (\Exception $e){
-            //
-        }
-    }
-
-    public function update($table, $parameter){
-        $query=sprintf("Update %s set %s=%s",
-        $table,
-        implode(',', array_keys($parameter)),
-        ':'.implode(',:', array_keys($parameter))
-        );
-        try {
-            $stmt=$this->pdo->prepare($query);
-            $stmt->execute($parameter);
         } catch (\Exception $e){
             //
         }

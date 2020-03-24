@@ -11,24 +11,27 @@ class pageControllers extends htmlOutput
 {
     public function home()
     {
-        return htmlOutput::view('login','');
+        return $this->view('login');
     }
 
     public function register(){
-        return htmlOutput::view('register',['']);
+        return $this->view('register');
     }
 
     public function todayTasks()
     {
-        return htmlOutput::view('tasks',['']);
+        return $this->view('tasks');
     }
 
     public function thisweek(){
-        return htmlOutput::view('thisweek',['']);
+        return $this->view('thisweek');
     }
 
     public function changeProfile(){
-        return htmlOutput::view('profile',['']);
+        return $this->view('profile');
     }
 
+    public function openTask(){
+        return $this->view('openTask');
+    }
 }
