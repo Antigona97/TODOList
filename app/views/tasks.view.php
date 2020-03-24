@@ -9,12 +9,15 @@
         </div>
         <div>
             <?php
+            if(is_array($tasks) || is_object($tasks))
+            {
                 foreach ($tasks as $task) :?>
-                    <h4><i class="fa fa-circle">
-                            <?=$task['description']?>
+                    <p><i class="fa fa-circle">
+                            <?=$task->description ?>
                         </i>
-                    </h4>
-                <?php endforeach; ?>
+                    </p>
+                <?php endforeach;
+            }?>
         </div>
     </form>
     <form class="form-inline" method="post" action="/tasks" id="newTask" style="display: none">

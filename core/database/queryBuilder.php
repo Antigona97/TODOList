@@ -43,7 +43,7 @@ class queryBuilder
                 }
             }
             $stmt->execute();
-            return $stmt->fetch();
+            return $stmt->fetchALL(PDO::FETCH_CLASS);
         } catch (\Exception $e){
             //
         }

@@ -11,24 +11,24 @@ class pageControllers extends htmlOutput
 {
     public function home()
     {
-        return htmlOutput::view('login');
+        return htmlOutput::view('login','');
     }
 
     public function register(){
-        return htmlOutput::view('register');
+        return htmlOutput::view('register',['']);
     }
 
     public function todayTasks()
     {
-        return htmlOutput::view('tasks');
+        return htmlOutput::view('tasks',['']);
     }
 
     public function thisweek(){
-        return htmlOutput::view('thisweek');
+        return htmlOutput::view('thisweek',['']);
     }
 
     public function changeProfile(){
-        return htmlOutput::view('profile');
+        return htmlOutput::view('profile',['']);
     }
 
 }

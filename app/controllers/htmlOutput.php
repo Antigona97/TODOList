@@ -10,7 +10,10 @@ class htmlOutput
         exit;
     }
 
-    public function view($name){
+    public function view($name, $parameters=[]){
+
+        extract((array)$parameters);
+
         return require "app/views/$name.view.php";
     }
 

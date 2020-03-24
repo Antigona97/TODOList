@@ -16,7 +16,7 @@ abstract class task
         $parameters=[
             'userId'=>$userId
         ];
-        $this->tasks=App::get('database')->selectData('Select * from tasks where userId=:userId', $parameters);
+        return App::get('database')->selectData('Select * from tasks where userId=:userId', $parameters);
     }
 
 }
