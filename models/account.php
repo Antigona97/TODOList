@@ -43,13 +43,12 @@ class account
         $parameters=[
             'username'=>$username
         ];
-        $hash=App::get('database')->selectData("Select password from users where username=:username", $parameters);
+        $hash=App::get('database')->selectData("Select * from users where username=:username", $parameters);
         foreach ($hash as $passwordHash){
-            if(!password_verify($password, $passwordHash->password)) {
+            if(!password_verify($password, $passwordHash->password)){
                 return false;
-            }   return true;
+            } return true;
         }
-
     }
 
     public function login($username){

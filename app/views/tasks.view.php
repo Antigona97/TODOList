@@ -13,7 +13,7 @@
             {
                 foreach ($tasks as $task) :?>
                     <p><i class="fa fa-circle">
-                            <?=$task->description ?>
+                            <?= $task->description ?>
                         </i>
                     </p>
                 <?php endforeach;

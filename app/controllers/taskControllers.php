@@ -39,10 +39,6 @@ class taskControllers extends task
 
     public function display(){
         $userId=$_SESSION['account'];
-        if ($this->isSearch()) {
-            $val = $this->isSearch();
-            return $this->displayTasks($userId);
-        }
         $tasks = $this->displayTasks($userId);
         return htmlOutput::view('tasks',[
             'tasks'=>$tasks
