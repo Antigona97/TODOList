@@ -2,22 +2,51 @@
 <!-- Page content -->
 <div id="editor">
     <div id="agenda-view">
-        <form method="post" action="/saveTask?taskName=<?=$_GET['task']?>">
+        <?php foreach ($tasks as $task) :
+            if ($task->taskId == $_GET['task']){?>
+        <form method="post" action="/saveTask?taskId=<?= $task->taskId; ?>">
             <div class="row">
-                <h4><?= $_GET['task']; ?></h4>
-                <button class="ui-icon ui-icon-pencil"  type="submit" name="editTask"></button>
-                <button class="ui-icon ui-icon-trash" type="submit" name="deleteTask"></button>
+                <h4><?= $task->taskName; ?></h4>
+                <button class="ui-icon ui-icon-pencil" type="submit" id="editTask"></button>
+                <button class="ui-icon ui-icon-trash" type="submit" id="deleteTask"></button>
             </div>
             <br/>
-            <textarea class="form-control" name="description" rows="16"></textarea> <br/>
+            <textarea class="form-control" name="description" rows="16"><?= $task->description; ?></textarea> <br/>
             <button type="submit" class="btn btn-outline-dark my-2 my-sm-0">Save</button>
-        </form>
+        </form><?php } endforeach;?>
+        <div class="dialogBoxes" id="editName" title="Edit Image" class="ui-icon ui-icon-circlesmall-close" >
+            <fieldset>
+                <input type="text" class="text ui-widget-content ui-corner-all" id="changeName"/>
+                <button id="save">Save</button>
+            </fieldset>
+        </div>
     </div>
 </div>
 </div>
 <script>
-    $(document).ready(function () {
+    $(function () {
+        $('#editName').dialog({
+            autoOpen: false
+        });
+        ('#editTask').on('click', function (e) {
+            e.preventDefault();
+            $('#editName').dialog('open');
+            editName(taskName);
+        });
     });
+    function editName(){
+        $('#save').click(function () {
+            var name=$('#changeName').val();
+            $.ajax({
+                url:"taskControllers.php",
+                method: 'POST',
+                data:{name, taskName},
+                success: function(){
+                    window.location.reload();
+                }
+            });
+        });
+    }
 </script>
 </body>
 </html>

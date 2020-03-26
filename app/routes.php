@@ -1,17 +1,17 @@
  <?php
 
  $router->get('', 'pageControllers@home');
- $router->get('today', 'pageControllers@todayTasks');
  $router->get('today', 'taskControllers@displayTasksAction');
 
  $router->get('thisweek', 'pageControllers@thisweek');
  $router->get('profile', 'pageControllers@changeProfile');
  $router->post('profile', 'userController@ProfileAction');
 
- $router->post('searchTasks','taskControllers@display');
- $router->get('searchTasks', 'pageControllers@todayTasks');
+ $router->post('searchTasks','taskControllers@displayTasksAction');
+ $router->get('searchTasks', 'taskControllers@displayTasksAction');
 
  $router->get('openTask', 'pageControllers@openTask');
+ $router->get('openTask', 'taskControllers@displayTasksAction');
 
  $router->post('saveTask', 'taskControllers@updateTaskAction');
 

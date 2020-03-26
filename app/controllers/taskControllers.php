@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Controllers;
 
-session_start();
+namespace App\Controllers;
 
 use App\Core\App;
 use App\Core\Database\queryBuilder;
@@ -26,22 +25,21 @@ class taskControllers extends task
     }
 
     public function updateTaskAction(){
-        $taskName=isset($_GET['taskName'])?$_GET['taskName']:'';
+        $user=$_SESSION['account'];
+        $task=$this->displayTasks($user->userId,0, $this->isSearch());
+        $taskId=isset($_GET['taskId'])?$_GET['taskId']:'';
         $description=isset($_POST['description'])?$_POST['description']:'';
-        if($_POST['description']){
-            if(!empty($description) && !empty($taskName)){
+        if(!empty($taskId)){
                 $this->updateTasks([
                     'description'=>$description,
-                    'taskName'=>$taskName
+                    'taskId'=>$taskId
                 ]);
-            }  return htmlOutput::view('tasks');
-        } elseif ($_POST['editTask']){
-
+            $this->displayTasksAction();
         }
     }
 
     public function completedTasks(){
-        if(isset($_GET['completed'])) {
+        if(isset($_POST['taskId'])) {
             $updateTasks = App::get('database')->update('tasks', [
                 'completed' => '1'
             ]);
@@ -51,15 +49,27 @@ class taskControllers extends task
         }
     }
 
-    public function displayTasksAction(){
-        $user=$_SESSION['account'];
-        $tasks = $this->displayTasks($user->userId);
+    public function displayTasksAction()
+    {
+        $user = $_SESSION['account'];
+        $tasks = $this->displayTasks($user->userId,0,$this->isSearch());
+        if(isset($_GET['task'])){
+            return htmlOutput::view('openTask',[
+                'tasks'=>$tasks
+            ]);
+        }
+        if($this->isSearch()){
+            return htmlOutput::view('tasks',[
+                'tasks'=>$tasks
+            ]);
+        }
         return htmlOutput::view('tasks', [
-            'tasks'=>$tasks
+            'tasks' => $tasks
         ]);
     }
 
     public function isSearch(){
         return isset($_GET['searchTask'])?$_GET['searchTask']:'';
     }
+
 }

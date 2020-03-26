@@ -8,22 +8,27 @@ use App\Core\Database\queryBuilder;
 
 class task
 {
-    public function displayTasks($userId){
-        $parameters=[
-            'userId'=>$userId
+    public function displayTasks($userId,$completed, $val)
+    {
+        $parameters = [
+            'userId' => $userId,
+            'completed'=>$completed,
+            'taskName'=>$val
         ];
-        return App::get('database')->selectData('Select * from tasks where userId=:userId', $parameters);
+        return $tasks = App::get('database')->selectData('Select * from tasks where userId=:userId and completed=:completed and taskName like concat("%",:taskName,"%") order by taskId desc', $parameters);
     }
 
-    public function insertTasks($taskName, $user){
-        $parameters=[
-            'taskName'=>$taskName,
-            'userId'=>$user,
+    public function insertTasks($taskName, $user)
+    {
+        $parameters = [
+            'taskName' => $taskName,
+            'userId' => $user,
         ];
-        return App::get('database')->insert('tasks', $parameters );
+        return App::get('database')->insert('tasks', $parameters);
     }
 
-    public function updateTasks($parameters){
-        return App::get('database')->selectData('Update tasks set $ where taskName=:taskName', $parameters);
+    public function updateTasks($parameters)
+    {
+        return App::get('database')->selectData('Update tasks set description=:description where taskId=:taskId', $parameters);
     }
 }

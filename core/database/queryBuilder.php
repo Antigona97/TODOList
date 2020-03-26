@@ -39,7 +39,6 @@ class queryBuilder
                     } else {
                         $type = PDO::PARAM_STR;
                     }
-
                     $stmt->bindValue(':'.$key, $val, $type);
                 }
             }
