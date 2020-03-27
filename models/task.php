@@ -15,7 +15,7 @@ class task
             'completed'=>$completed,
             'taskName'=>$val
         ];
-        return $tasks = App::get('database')->selectData('Select * from tasks where userId=:userId and completed=:completed and taskName like concat("%",:taskName,"%") order by taskId desc', $parameters);
+        return $tasks = App::get('database')->selectData('Select * from tasks where userId=:userId and completed=:completed and taskName like concat("%",:taskName,"%") order by priority', $parameters);
     }
 
     public function insertTasks($taskName, $user)
@@ -30,5 +30,9 @@ class task
     public function updateTasks($parameters)
     {
         return App::get('database')->selectData('Update tasks set description=:description where taskId=:taskId', $parameters);
+    }
+
+    public  function updatePriority($parameters){
+        return App::get('database')->selectData('Update tasks set priority=:priority where taskId=:taskId', $parameters);
     }
 }

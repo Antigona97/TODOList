@@ -10,6 +10,13 @@ use App\Models\account;
 use App\Models\task;
 use \Exception;
 
+if(isset($_POST['class']) && !empty($_POST['class'])){
+    $class=$_POST['class'];
+    switch ($class){
+        case 'updatePriorityAction' : taskControllers::updateProrityAction();  break;
+    }
+}
+
 class taskControllers extends task
 {
     public function createTasks(){
@@ -26,7 +33,7 @@ class taskControllers extends task
 
     public function updateTaskAction(){
         $user=$_SESSION['account'];
-        $task=$this->displayTasks($user->userId,0, $this->isSearch());
+        $task=$this->displayTasks($user->userId,0, $this->isSearch(), $this->priority());
         $taskId=isset($_GET['taskId'])?$_GET['taskId']:'';
         $description=isset($_POST['description'])?$_POST['description']:'';
         if(!empty($taskId)){
@@ -63,9 +70,25 @@ class taskControllers extends task
                 'tasks'=>$tasks
             ]);
         }
+        if($this->priority()){
+            $this->updatePriorityAction();
+        }
         return htmlOutput::view('tasks', [
             'tasks' => $tasks
         ]);
+    }
+
+    public function updatePriorityAction(){
+        $array=$this->priority();
+            $parameters=[
+                'priority'=>$array['position'],
+                'taskId'=>$array['id']
+            ];
+           $this->updatePriority($parameters);
+    }
+
+    public function priority(){
+        return isset($_POST['arrayPosition'])?$_POST['arrayPosition']:'';
     }
 
     public function isSearch(){

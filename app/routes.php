@@ -2,6 +2,7 @@
 
  $router->get('', 'pageControllers@home');
  $router->get('today', 'taskControllers@displayTasksAction');
+ $router->post('today', 'takeControllers@displayTasksAction');
 
  $router->get('thisweek', 'pageControllers@thisweek');
  $router->get('profile', 'pageControllers@changeProfile');

@@ -20,9 +20,9 @@ if(isset($_SESSION['account'])) {
                 <div>
                     <?php if (is_array($tasks) || is_object($tasks)) {
                         foreach ($tasks as $task) :?>
-                            <div id="'.$task->taskId.'" class="ui-widget-content">
+                            <div id="<?=$task->taskId?>"  class="ui-widget-content">
                                 <i class="fa fa-circle"></i>
-                                <a type="submit" href="/openTask?task=<?= $task->taskId; ?>">
+                                <a id="<?=$task->taskId?>" type="submit" href="/openTask?task=<?= $task->taskId; ?>">
                                     <?= $task->taskName; ?>
                                 </a>
                             </div> <br/>
@@ -37,7 +37,21 @@ if(isset($_SESSION['account'])) {
         $(document).ready(function () {
             displayDate();
             changeFonts();
-            $('.ui-widget-content').draggable();
+            $('.ui-widget-content').draggable({
+                stack: ".ui-widget-content",
+                stop: function(event, ui) {
+                    var arrayPosition=new Array();
+                    $('.ui-widget-content').each(function(){
+                        var position=$(this).position();
+                        arrayPosition.push({id:$(this).attr('id'), position:position.top});
+                    });
+                    $.ajax({
+                        url:'taskControllers.php',
+                        method: "POST",
+                        data:{'class':'updatePriorityAction','arrayPosition':arrayPosition}
+                    });
+                }
+            });
         });
 
         function displayDate() {
@@ -69,6 +83,7 @@ if(isset($_SESSION['account'])) {
                 $('#newTask').show();
             });
         }
+
     </script>
     <?php
 }
