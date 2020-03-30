@@ -34,6 +34,6 @@
         <li><a class="navbar-brand active" href="/today">Today</a></li>
         <li><a class="navbar-brand" href="/thisweek">This week</a></li>
         <li><a class="navbar-brand" href="/calendar">Calendar</a></li>
-        <li><a class="navbar-brand" href="#" tabindex="-1" aria-disabled="true">Finished</a></li>
+        <li><a class="navbar-brand" href="/completedTasks" tabindex="-1">Finished</a></li>
     </ul>
 </div>

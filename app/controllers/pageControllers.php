@@ -34,4 +34,8 @@ class pageControllers extends htmlOutput
     public function openTask(){
         return $this->view('openTask');
     }
+
+    public function finished(){
+        return $this->view('finished');
+    }
 }

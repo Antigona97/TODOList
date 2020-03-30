@@ -27,6 +27,10 @@ class task
         return App::get('database')->insert('tasks', $parameters);
     }
 
+    public function updateCompleted($parameters){
+        return App::get('database')->selectData('Update tasks set completed=:completed where taskId=:taskId', $parameters);
+    }
+
     public function updateTasks($parameters)
     {
         return App::get('database')->selectData('Update tasks set description=:description where taskId=:taskId', $parameters);

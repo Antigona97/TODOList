@@ -10,13 +10,6 @@ use App\Models\account;
 use App\Models\task;
 use \Exception;
 
-if(isset($_POST['class']) && !empty($_POST['class'])){
-    $class=$_POST['class'];
-    switch ($class){
-        case 'updatePriorityAction' : taskControllers::updateProrityAction();  break;
-    }
-}
-
 class taskControllers extends task
 {
     public function createTasks(){
@@ -46,13 +39,14 @@ class taskControllers extends task
     }
 
     public function completedTasks(){
-        if(isset($_POST['taskId'])) {
-            $updateTasks = App::get('database')->update('tasks', [
-                'completed' => '1'
-            ]);
-            htmlOutput::redirect('');
-        } else {
-            return htmlOutput::redirect('/today');
+        if(isset($_POST['taskId']) && isset($_POST['completed'])) {
+            if(!empty($_POST['taskId']) && !empty($_POST['completed'])){
+                $updateTasks = $this->updateCompleted([
+                    'completed' => $_POST['completed'],
+                    'taskId'=>$_POST['taskId']
+                ]);
+                htmlOutput::redirect('');
+            }  else return htmlOutput::redirect('/today');
         }
     }
 
@@ -80,12 +74,19 @@ class taskControllers extends task
 
     public function updatePriorityAction(){
         $array=$this->priority();
-            $parameters=[
-                'priority'=>$array['position'],
-                'taskId'=>$array['id']
-            ];
-           $this->updatePriority($parameters);
+        $data=json_decode($array);
+        if(!empty($data)){
+            foreach ($data as $item){
+                $parameters=[
+                    'priority'=>$item->position,
+                    'taskId'=>$item->id
+                ];
+                var_dump($parameters);
+                $this->updatePriority($parameters);
+            }
+        }
     }
+
 
     public function priority(){
         return isset($_POST['arrayPosition'])?$_POST['arrayPosition']:'';

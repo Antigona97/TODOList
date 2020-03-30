@@ -37,18 +37,19 @@ if(isset($_SESSION['account'])) {
         $(document).ready(function () {
             displayDate();
             changeFonts();
+            var arrayPosition=new Array();
             $('.ui-widget-content').draggable({
                 stack: ".ui-widget-content",
                 stop: function(event, ui) {
-                    var arrayPosition=new Array();
                     $('.ui-widget-content').each(function(){
                         var position=$(this).position();
                         arrayPosition.push({id:$(this).attr('id'), position:position.top});
                     });
-                    $.ajax({
-                        url:'taskControllers.php',
-                        method: "POST",
-                        data:{'class':'updatePriorityAction','arrayPosition':arrayPosition}
+                    var position=JSON.stringify(arrayPosition);
+                    var request=$.ajax({
+                        type: "POST",
+                        url: 'today',
+                        data: {'arrayPosition': position}
                     });
                 }
             });
@@ -72,9 +73,9 @@ if(isset($_SESSION['account'])) {
                 $(this).addClass('fa fa-check-circle');
                 $(this).closest('div').hide('slow');
                 var id=$(this).closest('div').attr('id');
-                $.ajax({
-                    url:'taskControllers.php',
-                    data:{'taskId':id},
+                var request=$.ajax({
+                    url:'completed',
+                    data:{'taskId':id, 'completed':'1'},
                     method:'post'
                 });
             });
@@ -83,6 +84,7 @@ if(isset($_SESSION['account'])) {
                 $('#newTask').show();
             });
         }
+
 
     </script>
     <?php
