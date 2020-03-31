@@ -9,7 +9,10 @@ if(isset($_SESSION['account'])) {
                 <div class="row">
                     <input type="text" name="taskName" class="form-control mr-sm-2"
                            placeholder="e.g. Conference meeting">
-                    <button id="dateTask" class="btn btn-outline-dark my-2 my-sm-0"><?php echo date("d F") ?></button>
+                    <button id="dateTask" class="btn btn-outline-dark my-2 my-sm-0"><?php echo $date; ?></button>
+                    <div class="scheduler" style="display: none;" data-placement="top">
+                        <input id="scheduler-input"  class="form-control mr-sm-2" placeholder="Type a date" spellcheck="false">
+                    </div>
                     <button type="submit" class="btn btn-outline-dark my-2 my-sm-0">Add task</button>
                 </div>
             </form> <br/>
@@ -37,6 +40,7 @@ if(isset($_SESSION['account'])) {
         $(document).ready(function () {
             displayDate();
             changeFonts();
+            changeDate();
             var arrayPosition=new Array();
             $('.ui-widget-content').draggable({
                 stack: ".ui-widget-content",
@@ -65,9 +69,6 @@ if(isset($_SESSION['account'])) {
         }
 
         function changeFonts() {
-            $('#dateTask').click(function (e) {
-                $('#inputTask').show();
-            });
             $('.fa-circle').click(function () {
                 $(this).removeClass();
                 $(this).addClass('fa fa-check-circle');
@@ -83,6 +84,22 @@ if(isset($_SESSION['account'])) {
                 $('#addtask').attr('style', 'display: none');
                 $('#newTask').show();
             });
+        }
+
+        function changeDate() {
+            $('#dateTask').click(function (e) {
+                e.preventDefault();
+                $('.scheduler').show();
+                $('#scheduler-input').datepicker();
+            });
+            $(document).on('change','#scheduler-input', function () {
+                var date=$('scheduler-input').val();
+                $.ajax({
+                   url:'today',
+                   method:'POST',
+                   data:{'date':date}
+                });
+            })
         }
 
 

@@ -18,11 +18,12 @@ class task
         return $tasks = App::get('database')->selectData('Select * from tasks where userId=:userId and completed=:completed and taskName like concat("%",:taskName,"%") order by priority', $parameters);
     }
 
-    public function insertTasks($taskName, $user)
+    public function insertTasks($taskName, $user, $date)
     {
         $parameters = [
             'taskName' => $taskName,
             'userId' => $user,
+            'date'=>$date
         ];
         return App::get('database')->insert('tasks', $parameters);
     }

@@ -21,6 +21,7 @@
 
  $router->get('completedTasks', 'pageControllers@finished');
  $router->post('completedTasks', 'taskControllers@displayTasksAction');
+ $router->get('completedTasks', 'taskControllers@displayTasksAction');
  $router->post('completed', 'taskControllers@completedTasks');
 
 

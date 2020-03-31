@@ -16,7 +16,7 @@ class taskControllers extends task
         $user=$_SESSION['account'];
         $taskName=isset($_POST['taskName'])?$_POST['taskName']:'';
         if(!empty($taskName)){
-            $insert=$this->insertTasks($taskName, $user->userId);
+            $insert=$this->insertTasks($taskName, $user->userId, $this->displayDate());
             $tasks=$this->displayTasksAction();
             return htmlOutput::view('tasks', [
                 'tasks'=>$tasks
@@ -53,22 +53,32 @@ class taskControllers extends task
     public function displayTasksAction()
     {
         $user = $_SESSION['account'];
-        $tasks = $this->displayTasks($user->userId,0,$this->isSearch());
+        $tasks = $this->displayTasks($user->userId,$this->isCompleted(),$this->isSearch());
+        $date=$this->displayDate();
         if(isset($_GET['task'])){
             return htmlOutput::view('openTask',[
-                'tasks'=>$tasks
+                'tasks'=>$tasks,
+                'date'=>$date
             ]);
         }
         if($this->isSearch()){
             return htmlOutput::view('tasks',[
-                'tasks'=>$tasks
+                'tasks'=>$tasks,
+                'date'=>$date
             ]);
         }
         if($this->priority()){
             $this->updatePriorityAction();
         }
+        if($this->isCompleted()){
+            return htmlOutput::view('finished',[
+                'tasks'=>$tasks,
+                'date'=>$date
+            ]);
+        }
         return htmlOutput::view('tasks', [
-            'tasks' => $tasks
+            'tasks' => $tasks,
+            'date'=>$date
         ]);
     }
 
@@ -87,13 +97,20 @@ class taskControllers extends task
         }
     }
 
-
     public function priority(){
         return isset($_POST['arrayPosition'])?$_POST['arrayPosition']:'';
     }
 
     public function isSearch(){
         return isset($_GET['searchTask'])?$_GET['searchTask']:'';
+    }
+
+    public function isCompleted(){
+        return isset($_GET['completed'])?$_GET['completed']:0;
+    }
+
+    public function displayDate(){
+        return isset($_POST['date'])?$_POST['date']:date("Y-m-d");
     }
 
 }

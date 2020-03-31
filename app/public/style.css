@@ -31,6 +31,13 @@ html, body {
     padding-bottom: inherit;
     margin-right: 100px;
 }
+.scheduler {
+    position: absolute;
+    z-index: 1;
+    will-change: transform;
+    top: 100px;
+    transform: translate3d(210px, 20px, 0px);
+}
 .navbar-fixed-left {
     height: 100%;
     flex: 1;
