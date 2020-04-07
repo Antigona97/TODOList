@@ -8,20 +8,30 @@ use App\Core\Database\queryBuilder;
 
 class task
 {
-    public function displayTasks($userId,$completed, $val)
+    public function displayTasks($userId,$completed, $val, $date)
     {
         $parameters = [
             'userId' => $userId,
             'completed'=>$completed,
-            'taskName'=>$val
+            'taskName'=>$val,
+            'date'=>$date
         ];
-        return $tasks = App::get('database')->selectData('Select * from tasks where userId=:userId and completed=:completed and taskName like concat("%",:taskName,"%") order by priority', $parameters);
+        return $tasks = App::get('database')->selectData('Select * from tasks where userId=:userId and completed=:completed and date=:date and taskName like concat("%",:taskName,"%") order by sort', $parameters);
     }
 
-    public function insertTasks($taskName, $user, $date)
+    public function displayAllTasks($userId, $completed){
+        $parameters=[
+            'userId'=>$userId,
+            'completed'=>$completed
+        ];
+        return App::get('database')->selectData("Select * from tasks where userId=:userId and completed=:completed order by sort", $parameters);
+    }
+
+    public function insertTasks($taskName,$priority, $user, $date)
     {
         $parameters = [
             'taskName' => $taskName,
+            'priority'=>$priority,
             'userId' => $user,
             'date'=>$date
         ];
@@ -37,7 +47,15 @@ class task
         return App::get('database')->selectData('Update tasks set description=:description where taskId=:taskId', $parameters);
     }
 
-    public  function updatePriority($parameters){
-        return App::get('database')->selectData('Update tasks set priority=:priority where taskId=:taskId', $parameters);
+    public function updateTaskName($parameters){
+        return App::get('database')->selectData('Update tasks set taskName=:taskName where taskId=:taskId', $parameters);
+    }
+
+    public  function updateSort($parameters){
+        return App::get('database')->selectData('Update tasks set sort=:sort where taskId=:taskId', $parameters);
+    }
+
+    public function delete($parameters){
+        return App::get('database')->selectData('Delete from tasks where taskId=:taskId',$parameters);
     }
 }

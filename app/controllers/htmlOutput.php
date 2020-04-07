@@ -10,11 +10,15 @@ class htmlOutput
         exit;
     }
 
-    public function view($name, $parameters=[]){
+    public function viewUserPages($name, $parameters=[]){
 
         extract((array)$parameters);
 
         return require "app/views/$name.view.php";
+    }
+
+    public function view($name){
+        return require "app/views/user/$name.view.php";
     }
 
     public function error($path,$field,$error){

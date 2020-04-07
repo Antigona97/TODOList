@@ -20,22 +20,27 @@ class pageControllers extends htmlOutput
 
     public function todayTasks()
     {
-        return $this->view('tasks');
+        return $this->viewUserPages('tasks');
     }
 
-    public function thisweek(){
-        return $this->view('thisweek');
-    }
 
     public function changeProfile(){
-        return $this->view('profile');
+        return $this->viewUserPages('profile');
     }
 
     public function openTask(){
-        return $this->view('openTask');
+        return $this->viewUserPages('openTask');
     }
 
     public function finished(){
-        return $this->view('finished');
+        return $this->viewUserPages('finished');
+    }
+
+    public function alltasks(){
+        return $this->viewUserPages('allTasks');
+    }
+
+    public function calendar(){
+        return $this->viewUserPages('calendar');
     }
 }

@@ -2,9 +2,11 @@
 
  $router->get('', 'pageControllers@home');
  $router->get('today', 'taskControllers@displayTasksAction');
- $router->post('today', 'taskControllers@updatePriorityAction');
+ $router->post('today', 'taskControllers@updateSortingAction');
 
- $router->get('thisweek', 'pageControllers@thisweek');
+ $router->get('calendar', 'pageControllers@calendar');
+ $router->get('events', 'taskControllers@events');
+
  $router->get('profile', 'pageControllers@changeProfile');
  $router->post('profile', 'userController@ProfileAction');
 
@@ -13,17 +15,18 @@
 
  $router->get('openTask', 'pageControllers@openTask');
  $router->get('openTask', 'taskControllers@displayTasksAction');
-
- $router->post('saveTask', 'taskControllers@updateTaskAction');
+ $router->post('updateTask', 'taskControllers@taskActions');
 
  $router->get('tasks', 'taskControllers@createTasks');
  $router->post('tasks', 'taskControllers@createTasks');
 
  $router->get('completedTasks', 'pageControllers@finished');
- $router->post('completedTasks', 'taskControllers@displayTasksAction');
- $router->get('completedTasks', 'taskControllers@displayTasksAction');
+ $router->get('completedTasks', 'taskControllers@tasks');
  $router->post('completed', 'taskControllers@completedTasks');
 
+ $router->get('allTasks', 'pageControllers@alltasks');
+ $router->get('allTasks', 'taskControllers@tasks');
+ $router->get('task', 'taskControllers@displayTasksAction');
 
 
  $router->post('account/login', 'userController@loginAction');

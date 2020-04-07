@@ -8,109 +8,148 @@ use App\Core\Database\queryBuilder;
 use App\controllers\htmlOutput;
 use App\Models\account;
 use App\Models\task;
+use App\controllers\helper;
 use \Exception;
 
 class taskControllers extends task
 {
-    public function createTasks(){
+    public function events(){
         $user=$_SESSION['account'];
-        $taskName=isset($_POST['taskName'])?$_POST['taskName']:'';
-        if(!empty($taskName)){
-            $insert=$this->insertTasks($taskName, $user->userId, $this->displayDate());
-            $tasks=$this->displayTasksAction();
-            return htmlOutput::view('tasks', [
-                'tasks'=>$tasks
+        $tasks=$this->displayAllTasks($user->userId, helper::isCompleted());
+        foreach ($tasks as $task){
+            $data[]=array(
+                'id'=>$task->taskId,
+                'title'=>$task->taskName,
+                'description'=>$task->description,
+                'start'=>$task->date
+            );
+        }
+        echo json_encode($data);
+    }
+    public function tasks(){
+        $user=$_SESSION['account'];
+        if (helper::isCompleted()) {
+            return htmlOutput::viewUserPages('finished', [
+                'tasks' => $this->displayAllTasks($user->userId, helper::isCompleted())
             ]);
-        } htmlOutput::redirect('');
+        }
+        return htmlOutput::viewUserPages('allTasks',[
+            'tasks'=>$this->displayAllTasks($user->userId, helper::isCompleted())
+        ]);
     }
 
-    public function updateTaskAction(){
-        $user=$_SESSION['account'];
-        $task=$this->displayTasks($user->userId,0, $this->isSearch(), $this->priority());
-        $taskId=isset($_GET['taskId'])?$_GET['taskId']:'';
-        $description=isset($_POST['description'])?$_POST['description']:'';
-        if(!empty($taskId)){
-                $this->updateTasks([
-                    'description'=>$description,
-                    'taskId'=>$taskId
-                ]);
+    public function taskActions()
+    {
+        if (isset($_POST['description']) && $_POST['action']=='Save') {
+            $this->updateTaskAction();
+        }
+        elseif (isset($_POST['action']) && $_POST['action']=='Delete') {
+            $this->deleteTask();
+        }
+    }
+
+    public function createTasks()
+    {
+        $user = $_SESSION['account'];
+        $taskName = isset($_POST['taskName']) ? $_POST['taskName']:'';
+        $priority=isset($_POST['priority'])?$_POST['priority']:'';
+        if (!empty($taskName)) {
+            $insert = $this->insertTasks($taskName,$priority, $user->userId, $this->displayDate());
             $this->displayTasksAction();
         }
+        htmlOutput::redirect('');
     }
 
-    public function completedTasks(){
-        if(isset($_POST['taskId']) && isset($_POST['completed'])) {
-            if(!empty($_POST['taskId']) && !empty($_POST['completed'])){
-                $updateTasks = $this->updateCompleted([
+    public function completedTasks()
+    {
+        if (isset($_POST['taskId']) && isset($_POST['completed'])) {
+            if (!empty($_POST['taskId']) && !empty($_POST['completed'])) {
+                $updateTasks =$this->updateCompleted([
                     'completed' => $_POST['completed'],
-                    'taskId'=>$_POST['taskId']
+                    'taskId' => $_POST['taskId']
                 ]);
-                htmlOutput::redirect('');
-            }  else return htmlOutput::redirect('/today');
+                htmlOutput::redirect('finished');
+            } else return htmlOutput::redirect('/today');
         }
+        else return "ERROR";
     }
 
     public function displayTasksAction()
     {
         $user = $_SESSION['account'];
-        $tasks = $this->displayTasks($user->userId,$this->isCompleted(),$this->isSearch());
-        $date=$this->displayDate();
-        if(isset($_GET['task'])){
-            return htmlOutput::view('openTask',[
-                'tasks'=>$tasks,
-                'date'=>$date
+        $tasks = $this->displayTasks($user->userId, helper::isCompleted(), helper::isSearch(), $this->displayDate());
+        if (isset($_GET['taskId'])) {
+            return htmlOutput::viewUserPages('openTask', [
+                'tasks' => $this->displayAllTasks($user->userId),
+                'date'=>$this->displayDate()
             ]);
         }
-        if($this->isSearch()){
-            return htmlOutput::view('tasks',[
-                'tasks'=>$tasks,
-                'date'=>$date
-            ]);
+        elseif (helper::sorting()) {
+            $this->updateSortingAction();
         }
-        if($this->priority()){
-            $this->updatePriorityAction();
-        }
-        if($this->isCompleted()){
-            return htmlOutput::view('finished',[
-                'tasks'=>$tasks,
-                'date'=>$date
-            ]);
-        }
-        return htmlOutput::view('tasks', [
+        else return htmlOutput::viewUserPages('tasks', [
             'tasks' => $tasks,
-            'date'=>$date
+            'date' => $this->displayDate()
         ]);
     }
 
-    public function updatePriorityAction(){
-        $array=$this->priority();
-        $data=json_decode($array);
-        if(!empty($data)){
-            foreach ($data as $item){
-                $parameters=[
-                    'priority'=>$item->position,
-                    'taskId'=>$item->id
+    public function updateSortingAction()
+    {
+        $array = helper::sorting();
+        $data = json_decode($array);
+        if (!empty($data)) {
+            foreach ($data as $item) {
+                $parameters = [
+                    'sort' => $item->position,
+                    'taskId' => $item->id
                 ];
-                var_dump($parameters);
-                $this->updatePriority($parameters);
+                $this->updateSort($parameters);
             }
         }
     }
 
-    public function priority(){
-        return isset($_POST['arrayPosition'])?$_POST['arrayPosition']:'';
+    public function weekTasks()
+    {
+        $user = $_SESSION['account'];
+        $tasks = $this->displayTasks($user->userId, helper::isCompleted(), helper::isSearch(), $this->displayDate());
+        if(isset($_GET['taskId'])){
+            return htmlOutput::viewUserPages('openTask', [
+                'tasks' => $tasks,
+                'date' => $this->displayDate()
+            ]);
+        }
+        return htmlOutput::viewUserPages('thisweek', [
+            'tasks' => $tasks,
+            'date' => $this->displayDate()
+        ]);
     }
 
-    public function isSearch(){
-        return isset($_GET['searchTask'])?$_GET['searchTask']:'';
+    public function updateTaskAction(){
+        $taskId=isset($_GET['taskId'])?$_GET['taskId']:'';
+        if(!empty($taskId) && !empty($_POST['description']) && isset($_POST['description'])){
+            $this->updateTasks([
+                'description'=>$_POST['description'],
+                'taskId'=>$taskId
+            ]);
+        }
+        $this->displayTasksAction();
     }
 
-    public function isCompleted(){
-        return isset($_GET['completed'])?$_GET['completed']:0;
+    public function deleteTask()
+    {
+        $taskId = isset($_GET['taskId'])?$_GET['taskId']:'';
+        if (!empty($taskId)) {
+            $parameters = [
+                'taskId' => $taskId
+            ];
+            $this->delete($parameters);
+            return htmlOutput::redirect('today');
+        }
     }
 
-    public function displayDate(){
-        return isset($_POST['date'])?$_POST['date']:date("Y-m-d");
+    public function displayDate()
+    {
+        $date = isset($_POST['inputDate']) ? $_POST['inputDate'] : date("Y-m-d");
+        return date("Y-m-d", strtotime($date));
     }
-
 }
