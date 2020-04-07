@@ -80,7 +80,7 @@ class taskControllers extends task
         $tasks = $this->displayTasks($user->userId, helper::isCompleted(), helper::isSearch(), $this->displayDate());
         if (isset($_GET['taskId'])) {
             return htmlOutput::viewUserPages('openTask', [
-                'tasks' => $this->displayAllTasks($user->userId),
+                'tasks' => $this->displayAllTasks($user->userId, helper::isCompleted()),
                 'date'=>$this->displayDate()
             ]);
         }

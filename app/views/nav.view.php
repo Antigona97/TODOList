@@ -12,6 +12,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript" src="http://jqueryui.com/latest/ui/ui.datepicker.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js"></script>
     <script src='../packages/core/main.js'></script>
     <script src='../packages/interaction/main.js'></script>
     <script src='../packages/daygrid/main.js'></script>

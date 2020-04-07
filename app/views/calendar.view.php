@@ -19,11 +19,10 @@ include_once "nav.view.php"; ?>
                     right: 'dayGridMonth,listYear'
                 },
 
-                eventClick: function(event, jsEvent, view) {
-                    console.log(event.title);
+                eventClick: function(info) {
                     // opens events in a dialog window
-                    $('#modalTitle').html(event.title);
-                    $('#modalBody').html(event.description);
+                    $('#modalTitle').html(info.event.title);
+                    $('#modalBody').html(info.event.extendedProps.description);
                     $('#calendarModal').modal();
                 },
 
@@ -63,11 +62,12 @@ if(isset($_SESSION['account'])) {
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>
                                 <h4 id="modalTitle" class="modal-title"></h4>
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>
                             </div>
-                            <div id="modalBody" class="modal-body"> </div>
+                            <textarea id="modalBody" class="form-control"></textarea>
                             <div class="modal-footer">
+                                <button type="submit" class="btn btn-default" data-dismiss="modal">Update</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             </div>
                         </div>
