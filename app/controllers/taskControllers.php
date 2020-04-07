@@ -46,6 +46,9 @@ class taskControllers extends task
         elseif (isset($_POST['action']) && $_POST['action']=='Delete') {
             $this->deleteTask();
         }
+        else if(isset($_POST['description']) && isset($_POST['taskId'])){
+            $this->updateTaskAction();
+        }
     }
 
     public function createTasks()
@@ -125,7 +128,7 @@ class taskControllers extends task
     }
 
     public function updateTaskAction(){
-        $taskId=isset($_GET['taskId'])?$_GET['taskId']:'';
+        $taskId=isset($_REQUEST['taskId'])?$_REQUEST['taskId']:'';
         if(!empty($taskId) && !empty($_POST['description']) && isset($_POST['description'])){
             $this->updateTasks([
                 'description'=>$_POST['description'],

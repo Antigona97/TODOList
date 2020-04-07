@@ -32,6 +32,15 @@ include_once "nav.view.php"; ?>
                 }
 
             });
+            $('#save').click(function(info)
+            {
+                var description =$('#modalBody').val();
+                $.ajax({
+                    url:"updateTask",
+                    type:"POST",
+                    data:{description:description, taskId:'99'}
+                })
+            });
 
             calendar.render();
         });
@@ -65,9 +74,9 @@ if(isset($_SESSION['account'])) {
                                 <h4 id="modalTitle" class="modal-title"></h4>
                                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>
                             </div>
-                            <textarea id="modalBody" class="form-control"></textarea>
+                            <textarea id="modalBody" class="form-control" name="description"></textarea>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-default" data-dismiss="modal">Update</button>
+                                <button type="submit" id="save" class="btn btn-default" name="action" value="Save" data-dismiss="modal">Save</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             </div>
                         </div>
