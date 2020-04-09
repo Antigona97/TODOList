@@ -26,6 +26,20 @@ class taskControllers extends task
         }
         echo json_encode($data);
     }
+
+    public function createEvent(){
+        $user = $_SESSION['account'];
+        $taskName = isset($_POST['taskName']) ? $_POST['taskName']:'';
+        $priority=isset($_POST['priority'])?$_POST['priority']:'low';
+        $date=isset($_POST['date'])?$_POST['date']:'2020-04-23';
+        if (!empty($taskName) && !empty($date)) {
+            $this->insertTasks($taskName,$priority, $user->userId, $date);
+            var_dump(date("Y-m-d", strtotime($date)));
+            //$this->events();
+        }
+        htmlOutput::redirect('');
+    }
+
     public function tasks(){
         $user=$_SESSION['account'];
         if (helper::isCompleted()) {
@@ -46,16 +60,13 @@ class taskControllers extends task
         elseif (isset($_POST['action']) && $_POST['action']=='Delete') {
             $this->deleteTask();
         }
-        else if(isset($_POST['description']) && isset($_POST['taskId'])){
-            $this->updateTaskAction();
-        }
     }
 
     public function createTasks()
     {
         $user = $_SESSION['account'];
         $taskName = isset($_POST['taskName']) ? $_POST['taskName']:'';
-        $priority=isset($_POST['priority'])?$_POST['priority']:'';
+        $priority=isset($_POST['priority'])?$_POST['priority']:'low';
         if (!empty($taskName)) {
             $insert = $this->insertTasks($taskName,$priority, $user->userId, $this->displayDate());
             $this->displayTasksAction();
@@ -140,7 +151,7 @@ class taskControllers extends task
 
     public function deleteTask()
     {
-        $taskId = isset($_GET['taskId'])?$_GET['taskId']:'';
+        $taskId = isset($_REQUEST['taskId'])?$_REQUEST['taskId']:'';
         if (!empty($taskId)) {
             $parameters = [
                 'taskId' => $taskId

@@ -6,6 +6,7 @@
 
  $router->get('calendar', 'pageControllers@calendar');
  $router->get('events', 'taskControllers@events');
+ $router->post('event', 'taskControllers@createEvent');
 
  $router->get('profile', 'pageControllers@changeProfile');
  $router->post('profile', 'userController@ProfileAction');

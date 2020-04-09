@@ -24,27 +24,61 @@ include_once "nav.view.php"; ?>
                     $('#modalTitle').html(info.event.title);
                     $('#modalBody').html(info.event.extendedProps.description);
                     $('#calendarModal').modal();
+                    updateEvent(info.event.id);
+                    deleteEvent(info.event.id);
                 },
-
+                dateClick:function(info){
+                    var date=info.startStr;
+                },
+                selectable:true,
+                selectHelper:true,
+                select: function(date)
+                {
+                    var title = prompt("Enter Task Title");
+                    myDate = date.start.getFullYear() + '-' + ('0' + (date.start.getMonth()+1)).slice(-2) + '-' + ('0' + date.start.getDate()).slice(-2);
+                    if(title)
+                    {
+                        $.ajax({
+                            url:"event",
+                            type:"POST",
+                            data:{taskName:title, date:myDate},
+                            success: function () {
+                                window.location.reload();
+                            }
+                        })
+                    }
+                },
                 loading: function(bool) {
                     document.getElementById('loading').style.display =
                         bool ? 'block' : 'none';
                 }
 
             });
-            $('#save').click(function(info)
-            {
+            calendar.render();
+        });
+        function updateEvent(id) {
+            $('#save').click(function(){
                 var description =$('#modalBody').val();
                 $.ajax({
                     url:"updateTask",
                     type:"POST",
-                    data:{description:description, taskId:'99'}
-                })
+                    data:{description:description, taskId:id, action:'Save'}
+                });
+            });
+        }
+        function deleteEvent(id) {
+            $('#buttonDelete').click(function () {
+                $.ajax({
+                    url:"updateTask",
+                    type:'POST',
+                    data:{taskId:id, action:'Delete'},
+                    success:function () {
+                        window.location.reload();
+                    }
+                });
             });
 
-            calendar.render();
-        });
-
+        }
     </script>
     <style>
         #loading {
@@ -76,6 +110,7 @@ if(isset($_SESSION['account'])) {
                             </div>
                             <textarea id="modalBody" class="form-control" name="description"></textarea>
                             <div class="modal-footer">
+                                <button type="button" id="buttonDelete" class="ui-icon ui-icon-trash" name="action" value="Delete"></button>
                                 <button type="submit" id="save" class="btn btn-default" name="action" value="Save" data-dismiss="modal">Save</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             </div>
