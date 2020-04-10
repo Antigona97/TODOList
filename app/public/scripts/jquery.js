@@ -56,16 +56,16 @@ function sorting() {
 }
 
 function priority() {
-    $('.priority').each(function() {
-        if ($(this).text() == 'low') {
-            $(this).removeClass();
-            $(this).addClass('btn btn-outline-success');
-        } else if ($(this).text() == 'medium') {
-            $(this).removeClass();
-            $(this).addClass('btn btn-outline-warning');
+    $('.ui-widget-content').each(function() {
+        if ($(this).find('a').attr('class') == 'low') {
+            $(this).find('a').removeClass();
+            $(this).find('a').addClass('btn btn-outline-success');
+        } else if ($(this).find('a').attr('class') == 'medium') {
+            $(this).find('a').removeClass();
+            $(this).find('a').addClass('btn btn-outline-warning');
         } else {
-            $(this).removeClass();
-            $(this).addClass('btn btn-outline-danger');
+            $(this).find('a').removeClass();
+            $(this).find('a').addClass('btn btn-outline-danger');
         }
     });
 

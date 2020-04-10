@@ -41,7 +41,7 @@ include_once "nav.view.php"; ?>
                         $.ajax({
                             url:"event",
                             type:"POST",
-                            data:{taskName:title, date:myDate},
+                            data:{taskName:title, inputDate:myDate},
                             success: function () {
                                 window.location.reload();
                             }

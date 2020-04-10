@@ -8,7 +8,7 @@ use App\Core\Database\queryBuilder;
 
 class task
 {
-    public function displayTasks($userId,$completed, $val, $date)
+    public function selectTodayTask($userId,$completed, $val, $date)
     {
         $parameters = [
             'userId' => $userId,
@@ -19,12 +19,13 @@ class task
         return $tasks = App::get('database')->selectData('Select * from tasks where userId=:userId and completed=:completed and date=:date and taskName like concat("%",:taskName,"%") order by sort', $parameters);
     }
 
-    public function displayAllTasks($userId, $completed){
+    public function displayAllTasks($userId, $completed, $val){
         $parameters=[
             'userId'=>$userId,
-            'completed'=>$completed
+            'completed'=>$completed,
+            'taskName'=>$val
         ];
-        return App::get('database')->selectData("Select * from tasks where userId=:userId and completed=:completed order by sort", $parameters);
+        return App::get('database')->selectData('Select * from tasks where userId=:userId and completed=:completed and taskName like concat("%",:taskName,"%") order by sort', $parameters);
     }
 
     public function insertTasks($taskName,$priority, $user, $date)
@@ -51,7 +52,7 @@ class task
         return App::get('database')->selectData('Update tasks set taskName=:taskName where taskId=:taskId', $parameters);
     }
 
-    public  function updateSort($parameters){
+    public function updateSort($parameters){
         return App::get('database')->selectData('Update tasks set sort=:sort where taskId=:taskId', $parameters);
     }
 

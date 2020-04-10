@@ -25,7 +25,7 @@ class pageControllers extends htmlOutput
 
 
     public function changeProfile(){
-        return $this->viewUserPages('profile');
+        return $this->view('profile');
     }
 
     public function openTask(){

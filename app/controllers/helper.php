@@ -21,4 +21,10 @@ class helper
         return isset($_GET['completed']) ? $_GET['completed'] : 0;
     }
 
+    public function displayDate()
+    {
+        $date = isset($_POST['inputDate']) ? $_POST['inputDate'] : date("Y-m-d");
+        return date("Y-m-d", strtotime($date));
+    }
+
 }

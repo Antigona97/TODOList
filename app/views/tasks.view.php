@@ -24,12 +24,11 @@ if(isset($_SESSION['account'])) {
                 <div>
                     <?php if (is_array($tasks) || is_object($tasks)) {
                         foreach ($tasks as $task) :?>
-                            <div id="<?=$task->taskId?>"  class="ui-widget-content">
+                            <div id="<?=$task->taskId?>"  class="ui-widget-content" style="border: none">
                                 <i class="fa fa-circle"></i>
-                                <a id="<?=$task->taskId?>" type="submit" href="/openTask?taskId=<?= $task->taskId; ?>">
+                                <a id="<?=$task->taskId?>" class="<?=$task->priority; ?>" type="submit" href="/openTask?taskId=<?= $task->taskId; ?>">
                                     <?= $task->taskName; ?>
                                 </a>
-                                <label class="priority"><?=$task->priority; ?></label>
                             </div> <br/>
                         <?php endforeach;
                     }?>
